@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import { ThemeContext, themes } from './ThemeContext';
+import HeaderButton from './HeaderButton';
 
-function App() {
+function ClickButton(props) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HeaderButton onClick={props.changeTheme}>
+      Press me
+    </HeaderButton>
   );
+}
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      theme: themes.dark,  // this we use as a default color
+    };
+    this.ChangingBetweenThemes = () => {
+      this.setState(state => ({
+        theme:
+          state.theme === themes.dark
+            ? themes.light
+            : themes.dark,
+      }));
+    };
+  }
+
+  render() {
+    return (
+      <div>
+        <ThemeContext.Provider value={this.state.theme}>
+          <ClickButton changeTheme={this.ChangingBetweenThemes} />
+        </ThemeContext.Provider>
+      </div>
+    );
+  }
 }
 
 export default App;
